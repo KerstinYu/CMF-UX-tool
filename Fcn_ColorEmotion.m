@@ -30,19 +30,21 @@ dataCollection = nan(length(textureOrder),3);
 loadWait = waitbar(0,'‘ÿ»Î≥Ã–Ú£¨«Îµ»¥˝...');
 
 stimuliRGB= xlsread('ColorEmotionPara\color2','sheet1','B2:I101');
+ waitbar(0.3)
 [ndata, text, dataLabel]= xlsread('ColorEmotionPara\color2','sheet1','A2:A101');
+ waitbar(0.7)
 stimuliLabel = xlsread('ColorEmotionPara\color2','sheet1','A2:A101');
-
+waitbar(1)
 close(loadWait);
 %% input parameter
-screenSize=Screen('Rect',0);
-screenSize=[0 0 1540 900];
+ScreenSize=Screen('Rect',0);
+ScreenSize=[0 0 1440 900];
 
 monitorSize=13;
 viewDis=50;
 degree=5;
-screenWidth = monitorSize*2.54/sqrt(1+screenSize(4)^2/screenSize(3)^2);  % calculate screen width in cm
-pixLength=screenWidth/screenSize(3); %wRect(3); %calculates the size of a pixel in cm
+screenWidth = monitorSize*2.54/sqrt(1+ScreenSize(4)^2/ScreenSize(3)^2);  % calculate screen width in cm
+pixLength=screenWidth/ScreenSize(3); %wRect(3); %calculates the size of a pixel in cm
 pixs = round(2*tan((degree/2)*pi/180) * viewDis / pixLength);
 
 
@@ -50,23 +52,23 @@ pixs = round(2*tan((degree/2)*pi/180) * viewDis / pixLength);
 %
 xNumber = 25;
 yNumber = 4;
-cx =screenSize(3)/2;
-cy = screenSize(4)/2;
-GridLength = screenSize(3)/1.2;
+cx =ScreenSize(3)/2;
+cy = ScreenSize(4)/2;
+GridLength = ScreenSize(3)/1.2;
 GridHeight = GridLength/4;
 SingleGridLength = GridLength/(xNumber+2);
 SingleGridLength2=SingleGridLength/1.5;
 GridX = linspace(cx-GridLength/2,cx+GridLength/2,xNumber);
 GridY = linspace(cy-GridHeight/2,cy+GridHeight/2,yNumber);
 GridY2 = (GridY-250)/2;
-textureDis =ones(screenSize(4),screenSize(3),3)*0.5;
-background = figure('position',screenSize,'menubar','no','toolbar','no','color',[0.5,0.5,0.5]);
+textureDis =ones(ScreenSize(4),ScreenSize(3),3)*0.5;
+background = figure('position',ScreenSize,'menubar','no','toolbar','no','color',[0.5,0.5,0.5]);
 stimulus = rectangle('position',[cx-pixs/2-10 cy-pixs/2+30 pixs pixs],'FaceColor',[0.5 0.5 0.5],'EdgeColor',[0.5 0.5 0.5],'visible','off');
-textureDefult =ones(screenSize(4),screenSize(3),3)*0.5;
-textureDefult2 =ones(screenSize(4),screenSize(3),3)*0.5;
+textureDefult =ones(ScreenSize(4),ScreenSize(3),3)*0.5;
+textureDefult2 =ones(ScreenSize(4),ScreenSize(3),3)*0.5;
 
 textureContorl = ones(length(textureOrder),3);
-textureTemp = ones(screenSize(4),screenSize(3),3)*0.5;
+textureTemp = ones(ScreenSize(4),ScreenSize(3),3)*0.5;
 
 tampPref=nan;
 tampVale=nan;
