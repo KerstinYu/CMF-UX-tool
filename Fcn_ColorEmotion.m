@@ -28,9 +28,11 @@ dataCollection = nan(length(textureOrder),3);
 % load data
 % cd ('D:\Matlab\Kerstin\CMF研究\MainExp');
 loadWait = waitbar(0,'载入程序，请等待...');
+
 stimuliRGB= xlsread('ColorEmotionPara\color2','sheet1','B2:I101');
 [ndata, text, dataLabel]= xlsread('ColorEmotionPara\color2','sheet1','A2:A101');
 stimuliLabel = xlsread('ColorEmotionPara\color2','sheet1','A2:A101');
+
 close(loadWait);
 %% input parameter
 screenSize=Screen('Rect',0);
