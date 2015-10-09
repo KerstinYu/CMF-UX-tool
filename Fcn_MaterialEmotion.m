@@ -8,18 +8,11 @@ function Fcn_MaterialEmotion(mainDir)
 %%
 % close all;
 % clear all;
-KbName('UnifyKeyNames');
-escapeKey = KbName('escape');
-Key(1)=KbName('Z');
-Key(2)=KbName('M');
-prompt={'输入你的姓名','输入你的性别'};
-name='Basic Information';
-numlines=1;
-defaultanswer={'姓名拼音','女=1，男=2'};
-options.Resize='on';
-options.WindowStyle='normal';
-options.Interpreter='tex';
-answer=inputdlg(prompt,name,numlines,defaultanswer);
+try
+   inputAns = Fcn_InputSubInfo();
+    if isempty(inputAns)
+        return
+    end
 
 for i = 1:sum(clock)
     textureOrder = randperm(100);
@@ -50,7 +43,7 @@ for i=1:FileNumber-2
 end
 
 close(loadWait);
-
+cd(mainDir);
 % image([10 100],[10 100], I);
 % axis([0 1440 0 900])
 % axis off
@@ -154,7 +147,7 @@ check.Value2 = uicontrol(background,'style','text','position',[cx-340 cy-300 680
 %     'callback','tampPref=get(check.Preferrence,''Value'');');
 check.Valence = uicontrol(background,'style','slider','position',[cx-350 cy-240 700 39],'visible','on','Value',2.5,...
     'fontsize',20,'SliderStep',[0.01,0.1],'Max',5,'Min',0,'backgroundColor',[0.35 0.35 0.35]);
-check.Arousal = uicontrol(background,'style','slider','position',[cx-350 cy-280 700 39],'visible','on','Value',0,...
+check.Arousal = uicontrol(background,'style','slider','position',[cx-350 cy-280 700 39],'visible','on','Value',2.5,...
     'fontsize',20,'SliderStep',[0.01,0.1],'Max',5,'Min',0, 'backgroundColor',[0.35 0.35 0.35]);
 set(check.Arousal,'callback',{@Fcn_SetVisibleOn,okButton});
 fixpoint=rectangle('position',[cx-pixs/2+90 cy-pixs/2+20 10 10],'Curvature', [1 1],'FaceColor',[1 0 0],'EdgeColor',[0.5 0.5 0.5],'visible','on');
@@ -179,6 +172,8 @@ set(check.Value2,'visible','off');
 
 tampVale=get(check.Valence,'Value');
 tampArou=get(check.Arousal,'Value');
+set(check.Valence,'visible','off','Value',2.5);
+set(check.Arousal ,'visible','off','Value',2.5);
 %% main test
 stimulue.Label = uicontrol(background,'style','text','position',[cx-pixs/2 cy-pixs/2 225 50],'visible','on',...
     'fontsize',16,'string','','BackgroundColor',[0.5 0.5 0.5]);
@@ -206,7 +201,7 @@ for i=1:23
     dataCollection(textureOrder(i),2)=tampArou;
     %   set(check.Preferrence,'visible','off','Value',2.5);
     set(check.Valence,'visible','off','Value',2.5);
-    set(check.Arousal ,'visible','off','Value',0);
+    set(check.Arousal ,'visible','off','Value',2.5);
 end
 set(Guide.guide,'visible','off');
 set(check.Arousal,'visible','off');
@@ -225,8 +220,8 @@ set(Guide.CloseButton,'callback',{@Fcn_CloseFig,background});
 %% data saving and result plotting
 DataCollection=dataCollection;
 dataCollection2=fix(dataCollection*(11/6));
-currentfile=sprintf([answer{1} '_' answer{2} '_' 'metal']);
-name={answer{1}};
+currentfile=sprintf([inputAns{1} '_' inputAns{2} '_' 'metal']);
+name={inputAns{1}};
 
 cd([mainDir '\MaterialEmotionPara\UserData']);
 
@@ -241,6 +236,9 @@ xlswrite('data12_18.xlsx', name, 2, 'B1');
 
 save(currentfile,'dataCollection','DataCollection');
 cd(mainDir);
+catch ME
+    cd(mainDir);
+end
 %% sub functions
     function Fcn_SetVisibleOff(hObject,eventdata,hChild)
         set(hChild,'visible','off');
